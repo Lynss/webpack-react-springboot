@@ -4,9 +4,8 @@ const HtmlwebpackPlugin = require('html-webpack-plugin')
 //定义了一些文件夹的路径
 const ROOT_PATH = path.resolve(__dirname)
 const APP_PATH = path.resolve(ROOT_PATH, 'app')
+const TEM_PATH = path.resolve(APP_PATH, 'templates')
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build')
-const TEM_PATH = path.resolve(ROOT_PATH, 'templates')
-const EXCLUDE_PATH = path.resolve(ROOT_PATH, 'node_modules')
 
 module.exports = {
     //项目的文件夹 可以直接用文件夹名称 默认会找index.js 也可以确定是哪个文件名字
@@ -19,7 +18,6 @@ module.exports = {
         path: BUILD_PATH,
         filename: '[name].[hash].js'
     },
-    devtool: 'eval-source-map',
     devServer: {
         historyApiFallback: true,
         hot: true,
@@ -44,7 +42,7 @@ module.exports = {
             },
             {
                 test: /\.s?css$/,
-                loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap'],
+                loaders: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.less$/,
@@ -67,9 +65,9 @@ module.exports = {
     //添加我们的插件 会自动生成一个html文件
     plugins: [
         //这个使用uglifyJs压缩你的js代码
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     minimize: true
+        // }),
         //把入口文件里面的数组打包成verdors.js
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendors',
