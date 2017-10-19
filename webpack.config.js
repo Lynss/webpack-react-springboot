@@ -6,12 +6,12 @@ const ROOT_PATH = path.resolve(__dirname)
 const APP_PATH = path.resolve(ROOT_PATH, 'app')
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build')
 const TEM_PATH = path.resolve(ROOT_PATH, 'templates')
+const EXCLUDE_PATH = path.resolve(ROOT_PATH, 'node_modules')
 
 module.exports = {
     //项目的文件夹 可以直接用文件夹名称 默认会找index.js 也可以确定是哪个文件名字
     entry: {
-        app: path.resolve(APP_PATH, 'index.js'),
-        mobile: path.resolve(APP_PATH, 'mobile.js'),
+        app: path.resolve(APP_PATH, 'index.jsx'),
         vendors: ['jquery', 'moment']
     },
     //输出的文件名 合并以后的js会命名为bundle.js
@@ -39,12 +39,16 @@ module.exports = {
                 test: /\.jsx?$/,
                 enforce: "pre",
                 include: APP_PATH,
+                exclude:/node_modules/,
                 loader: 'eslint-loader'
             },
             {
                 test: /\.s?css$/,
                 loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap'],
-                include: APP_PATH
+            },
+            {
+                test: /\.less$/,
+                loaders: ['css-loader', 'style-loader', 'sass-loader','less-loader'],
             },
             {
                 test: /\.(png|jpg)$/,
@@ -55,7 +59,7 @@ module.exports = {
                 loader: 'babel-loader',
                 include: APP_PATH,
                 query: {
-                    presets: ['es2015']
+                    presets: ['es2015','react']
                 }
             }
         ]
@@ -78,13 +82,6 @@ module.exports = {
             //chunks这个参数告诉插件要引用entry里面的哪几个入口
             chunks: ['app', 'vendors'],
             //要把script插入到标签里
-            inject: 'body'
-        }),
-        new HtmlwebpackPlugin({
-            title: 'Hello Mobile app',
-            template: path.resolve(TEM_PATH, 'mobile.html'),
-            filename: 'mobile.html',
-            chunks: ['mobile', 'vendors'],
             inject: 'body'
         }),
         new webpack.ProvidePlugin({

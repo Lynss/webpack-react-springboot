@@ -1,5 +1,8 @@
 {
-  "extends": "eslint:recommended",
+  "extends": [
+    "plugin:react/recommended"
+  ],
+  "plugins": ["react"],
   "root": true,
   "env": {
     "browser": true,
@@ -17,6 +20,8 @@
     }
   },
   "rules": {
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
     "curly": 2,
     "dot-notation": 2,
     "radix": 2,
